@@ -3,6 +3,8 @@ const User = require("../../models/user");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
+  // <------------------------- CREATE USER --------------------------->
+
   createUser: async (args) => {
     try {
       const existingUser = await User.findOne({ email: args.userInput.email });
@@ -24,6 +26,7 @@ module.exports = {
     }
   },
 
+  // <------------------------- LOGIN ------------------------------->
   login: async ({ email, password }) => {
     const user = await User.findOne({ email: email });
     const isEqual = await bcrypt.compare(password, user.password);

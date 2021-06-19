@@ -1,7 +1,9 @@
 const Event = require("../../models/events");
+const User = require("../../models/user");
 const { transformEvent } = require("./merge");
-
+const { dateToString } = require("../../helpers/date");
 module.exports = {
+  // <------------------------- Event Query ------------------------------->
   events: async () => {
     try {
       const events = await Event.find().populate("creator");
@@ -13,14 +15,19 @@ module.exports = {
     }
   },
 
-  createEvent: async (args) => {
+  // <------------------------- Event Create ------------------------------->
+
+  createEvent: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
     const { title, description, price, date } = args.eventInput;
     const event = new Event({
       title: args.eventInput.title,
       description: args.eventInput.description,
       price: -args.eventInput.price,
       date: dateToString(args.eventInput.date),
-      creator: "60bca490b9bcca17a403cc54",
+      creator: req.userId,
     });
     let createdEvent;
     try {
@@ -28,7 +35,7 @@ module.exports = {
       createdEvent = transformEvent(result);
 
       //Finding User with ID
-      const creator = await User.findById("60bca490b9bcca17a403cc54");
+      const creator = await User.findById(req.userId);
       if (!creator) {
         throw new Error("User not found."); //Error if not user not in Database
       }
@@ -42,6 +49,8 @@ module.exports = {
       throw err;
     }
   },
+
+  // <------------------------- Create User ------------------------------->
 
   createUser: async (args) => {
     try {
