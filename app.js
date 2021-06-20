@@ -24,7 +24,7 @@ mongoose
     `mongodb+srv://${credsForConnection.env.MONGO_USER}:${credsForConnection.env.MONGO_PASSWORD}@cluster0.cow9c.mongodb.net/${credsForConnection.env.MONGO_DB}?retryWrites=true&w=majority`
   )
   .then(() => {
-    app.listen(3000);
+    app.listen(8000);
   })
   .catch((err) => {
     console.log(err);
