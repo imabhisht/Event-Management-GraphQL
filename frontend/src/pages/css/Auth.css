@@ -26,7 +26,7 @@
   border-radius: 3px;
   padding: 0.25rem 1rem;
   margin-right: 1rem;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.26);
+  /* box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.26); */
   color: rgb(255, 255, 255);
   font-style: normal;
   transition: all;
@@ -42,3 +42,11 @@
 /* .auth_inputField {
   padding: 20;
 } */
+
+.form-control input {
+  font-size: large;
+  width: 100%;
+  padding: 12px 5px;
+  box-sizing: border-box;
+  border-radius: 1px;
+}

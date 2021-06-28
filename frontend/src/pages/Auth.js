@@ -7,11 +7,40 @@ class AuthPage extends Component {
     this.passwordEl = React.createRef();
   }
 
-  submitHandler = () => {};
+  submitHandler = (event) => {
+    event.preventDefault();
+    const email = this.emailEl.current.value;
+    const password = this.passwordEl.current.value;
+
+    if (email.trim().length === 0 || password.trim().length === 0) {
+      return;
+    }
+
+    const requestBody = {
+      query: `
+      mutation{
+        createUser(userInput: {email: "${email}",password: "${password}"}){
+          _id
+          email
+        }
+      }
+      `,
+    };
+
+    console.log(email, password);
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
 
   render() {
     return (
-      <form className="auth-form">
+      <form className="auth-form" onSubmit={this.submitHandler}>
         <div className="form-control">
           <label for="email">Email</label>
           <input
@@ -33,8 +62,8 @@ class AuthPage extends Component {
         </div>
 
         <div className="form-actions">
-          <button type="button">Switch to Signup</button>
           <button type="submit">Submit</button>
+          <button type="button">Switch to Signup</button>
         </div>
       </form>
     );
